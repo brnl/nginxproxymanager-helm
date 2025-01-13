@@ -3,7 +3,9 @@
 # The settings here define the variables that will be used in your templates.
 
 # The namespace where resources will be deployed (like Nginx Proxy Manager).
-namespace: nginx-proxy-manager
+# The namespace is optional and can be set at installation time.
+# If not provided, Helm will use the namespace from the `--namespace` flag or the default namespace.
+namespaceOverride: ""
 
 nginx:
   # Specify how many replicas (instances) of Nginx Proxy Manager you want to run.

@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-mariadb-data
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespaceOverride | default .Release.Namespace }}
   labels:
     app: {{ .Release.Name }}
 spec:

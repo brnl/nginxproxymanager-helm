@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-mariadb
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespaceOverride | default .Release.Namespace }}
   labels:
     app: {{ .Release.Name }}
 spec:
