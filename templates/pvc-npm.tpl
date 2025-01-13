@@ -1,0 +1,14 @@
+# PersistentVolumeClaim for Nginx Proxy Manager data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-npm-data
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  accessModes:
+    - {{ .Values.nginxPVC.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.nginxPVC.storage }}

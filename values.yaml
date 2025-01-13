@@ -1,0 +1,76 @@
+# Default values for deploying Nginx Proxy Manager.
+# This configuration file is written in YAML format.
+# The settings here define the variables that will be used in your templates.
+
+# The namespace where resources will be deployed (like Nginx Proxy Manager).
+namespace: nginx-proxy-manager
+
+nginx:
+  # Specify how many replicas (instances) of Nginx Proxy Manager you want to run.
+  replicas: 1
+
+  image:
+    # The Docker image repository for Nginx Proxy Manager.
+    repository: jc21/nginx-proxy-manager
+    # The version/tag of the Docker image you want to use (e.g., 'latest').
+    tag: latest
+
+  service:
+    # Type of service for Nginx Proxy Manager (e.g., LoadBalancer, ClusterIP, NodePort).
+    type: LoadBalancer
+    # External IPs that will be assigned to the Nginx service. Leave this empty to skip.
+    externalIPs: []
+
+    ports:
+      # Port for HTTP traffic (default is 80).
+      http: 80
+      # Port for HTTPS traffic (default is 443).
+      https: 443
+      # Port for the Nginx Proxy Manager web interface (default is 81).
+      webui: 81
+
+# Persistent storage configuration for Nginx Proxy Manager data.
+nginxPVC:
+  # Define the access mode for the persistent volume claim (PVC).
+  # Common options are: ReadWriteOnce (one pod can write), ReadOnlyMany (multiple pods can read), etc.
+  accessMode: ReadWriteOnce
+  # The amount of storage you want to allocate for the PVC.
+  storage: 5Gi
+
+mariadb:
+  # Specify how many replicas of MariaDB you want to run.
+  replicas: 1
+
+  image:
+    # The Docker image repository for MariaDB.
+    repository: jc21/mariadb-aria
+    # The version/tag of the Docker image you want to use (e.g., 'latest').
+    tag: latest
+
+  env:
+    # Root password for the MariaDB database (important for securing access).
+    rootPassword: root_pass_changeme
+    # The name of the database that will be created for Nginx Proxy Manager to use.
+    database: proxy-manager
+    # The username for the MariaDB user account.
+    user: proxy_manager_user
+    # The password for the MariaDB user account.
+    password: user_pass_changeme
+
+  service:
+    # Type of service for MariaDB (e.g., ClusterIP, LoadBalancer, NodePort).
+    type: ClusterIP
+
+# Persistent storage configuration for MariaDB data.
+mariadbPVC:
+  # Define the access mode for the persistent volume claim (PVC).
+  accessMode: ReadWriteOnce
+  # The amount of storage you want to allocate for MariaDB data.
+  storage: 1Gi
+
+# Persistent storage configuration for storing Let's Encrypt certificates.
+letsencryptPVC:
+  # Define the access mode for the persistent volume claim (PVC).
+  accessMode: ReadWriteOnce
+  # The amount of storage you want to allocate for Let's Encrypt certificates.
+  storage: 1Gi

@@ -1,0 +1,40 @@
+# Nginx Proxy Manager Installation Notes
+
+Thank you for deploying Nginx Proxy Manager using this Helm chart!
+
+## Configuration Overview:
+
+- **Namespace**: The Nginx Proxy Manager has been deployed to the `nginx-proxy-manager` namespace (configured in `values.yaml`).
+  
+- **Nginx Proxy Manager Service**:
+  - Service type: {{ .Values.nginx.service.type }} (you can change it to ClusterIP, NodePort, or another service type if needed).
+  - Exposed ports:
+    - HTTP: {{ .Values.nginx.service.ports.http }}
+    - HTTPS: {{ .Values.nginx.service.ports.https }}
+    - Web UI: {{ .Values.nginx.service.ports.webui }}
+  - External IPs: {{- if .Values.nginx.service.externalIPs }}{{ .Values.nginx.service.externalIPs | join ", " }}{{ else }}No external IPs configured{{ end }}
+
+## Accessing Nginx Proxy Manager:
+
+1. **Access the Web UI**: 
+   The web UI is available at `http://<your_external_ip>:{{ .Values.nginx.service.ports.webui }}` (or `https://<your_external_ip>:{{ .Values.nginx.service.ports.webui }}` if you're using SSL).
+
+2. **Default Login Credentials**:
+   - Username: `admin@example.com`
+   - Password: `changeme`
+   
+   Please change the default login credentials after your first login.
+
+## Persistent Volumes:
+- **Nginx Data PVC**: The PVC for Nginx data has been created with a storage size of {{ .Values.nginxPVC.storage }} and access mode {{ .Values.nginxPVC.accessMode }}.
+- **MariaDB Data PVC**: The PVC for MariaDB data has been created with a storage size of {{ .Values.mariadbPVC.storage }} and access mode {{ .Values.mariadbPVC.accessMode }}.
+- **Let's Encrypt PVC**: The PVC for storing Let's Encrypt certificates has been created with a storage size of {{ .Values.letsencryptPVC.storage }} and access mode {{ .Values.letsencryptPVC.accessMode }}.
+
+## Next Steps:
+1. You can access the Nginx Proxy Manager web UI via the exposed service on the configured port.
+2. Configure your proxies, SSL certificates, and other settings through the web interface.
+3. For production environments, ensure that your database credentials and Nginx configuration are secure.
+
+If you have any issues, refer to the Helm chart documentation or consult the Nginx Proxy Manager [official documentation](https://nginxproxymanager.com/).
+
+Thank you for using this Helm chart for deploying Nginx Proxy Manager!
