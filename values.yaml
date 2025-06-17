@@ -52,13 +52,13 @@ mariadb:
     tag: latest
 
   env:
-    # Root password for the MariaDB database (important for securing access).
+    # Root password for the MariaDB root user (important for securing access).
     rootPassword: root_pass_changeme
     # The name of the database that will be created for Nginx Proxy Manager to use.
     database: proxy-manager
-    # The username for the MariaDB user account.
+    # The username for the MariaDB application user account.
     user: proxy_manager_user
-    # The password for the MariaDB user account.
+    # The password for the MariaDB application user account.
     password: user_pass_changeme
   
   # Existing secret for MariaDB credentials.
