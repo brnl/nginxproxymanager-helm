@@ -9,7 +9,9 @@ metadata:
 spec:
   accessModes:
     - {{ .Values.letsencryptPVC.accessMode }}
-  storageClassName: {{ .Values.letsencryptPVC.storageClassName | default "default" }}
+  {{- if .Values.letsencryptPVC.storageClassName }}
+  storageClassName: {{ .Values.letsencryptPVC.storageClassName }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.letsencryptPVC.storage }}

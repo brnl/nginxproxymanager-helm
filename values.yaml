@@ -39,7 +39,7 @@ nginxPVC:
   # The amount of storage you want to allocate for the PVC.
   storage: 5Gi
   # Storage class to use for the PVC.
-  storageClassName: default
+  storageClassName: ""
 
 mariadb:
   # Specify how many replicas of MariaDB you want to run.
@@ -86,7 +86,7 @@ mariadbPVC:
   # The amount of storage you want to allocate for MariaDB data.
   storage: 1Gi
   # Storage class to use for the PVC.
-  storageClassName: default
+  storageClassName: ""
 
 # Persistent storage configuration for storing Let's Encrypt certificates.
 letsencryptPVC:
@@ -95,4 +95,4 @@ letsencryptPVC:
   # The amount of storage you want to allocate for Let's Encrypt certificates.
   storage: 1Gi
   # Storage class to use for the PVC.
-  storageClassName: default
+  storageClassName: ""
