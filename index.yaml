@@ -3,32 +3,42 @@ entries:
   nginxproxymanager:
   - apiVersion: v2
     appVersion: latest
-    created: "2025-01-13T11:47:27.343820027+01:00"
+    created: "2025-06-17T15:02:10.625169693+02:00"
+    description: A Helm chart for deploying Nginx Proxy Manager on Kubernetes
+    digest: fe1366a34936898e7ef02cb7158075467554053132cbc7f132539ca39561e393
+    name: nginxproxymanager
+    type: application
+    urls:
+    - nginxproxymanager-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: latest
+    created: "2025-06-17T15:02:10.624200411+02:00"
     description: A Helm chart for deploying Nginx Proxy Manager on Kubernetes
     digest: 4c070158962c8b3bdabb5df3f423cedb92b8ca0cb072fd422a33c46fb4ed27cb
     name: nginxproxymanager
     type: application
     urls:
-    - https://brnl.github.io/nginxproxymanager-helm/nginxproxymanager-0.1.2.tgz
+    - nginxproxymanager-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-13T11:47:27.343104853+01:00"
+    created: "2025-06-17T15:02:10.623505567+02:00"
     description: A Helm chart for deploying Nginx Proxy Manager on Kubernetes
     digest: 1269898e036a55402e1b65994aef51fee5217b32cecbaf21299009a22f63a81e
     name: nginxproxymanager
     type: application
     urls:
-    - https://brnl.github.io/nginxproxymanager-helm/nginxproxymanager-0.1.1.tgz
+    - nginxproxymanager-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-13T11:47:27.342508218+01:00"
+    created: "2025-06-17T15:02:10.622928062+02:00"
     description: A Helm chart for deploying Nginx Proxy Manager on Kubernetes
     digest: 2ab00e2a7e7fbd207cc62c00a089dc9dd752877c95324e58e9c8e2418004bc8c
     name: nginxproxymanager
     type: application
     urls:
-    - https://brnl.github.io/nginxproxymanager-helm/nginxproxymanager-0.1.0.tgz
+    - nginxproxymanager-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-13T11:47:27.341967593+01:00"
+generated: "2025-06-17T15:02:10.622375797+02:00"
