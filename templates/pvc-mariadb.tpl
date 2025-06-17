@@ -9,6 +9,7 @@ metadata:
 spec:
   accessModes:
     - {{ .Values.mariadbPVC.accessMode }}
+  storageClassName: {{ .Values.mariadbPVC.storageClassName | default "default" }}
   resources:
     requests:
       storage: {{ .Values.mariadbPVC.storage }}

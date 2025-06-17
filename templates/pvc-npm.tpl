@@ -9,6 +9,7 @@ metadata:
 spec:
   accessModes:
     - {{ .Values.nginxPVC.accessMode }}
+  storageClassName: {{ .Values.nginxPVC.storageClassName | default "default" }}
   resources:
     requests:
       storage: {{ .Values.nginxPVC.storage }}

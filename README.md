@@ -22,42 +22,78 @@ helm repo update
 
 You can customize your deployment by modifying the `values.yaml` file before installation. The most commonly changed values are the database and application passwords.
 
+#### Using Kubernetes Secrets for MariaDB Credentials
+
+By default, the chart will create a Kubernetes Secret to store the MariaDB root password, user, and user password.  
+If you want to use your own existing secret, set `mariadb.existingSecret` to the name of your secret.  
+Your secret must contain the following keys:
+
+- `mysql-root-password`
+- `mysql-user`
+- `mysql-user-password`
+
+Example:
+
+```yaml
+mariadb:
+  existingSecret: my-mariadb-secret
+```
+
+Example Secret manifest:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-mariadb-secret
+  namespace: <your-namespace>
+type: Opaque
+stringData:
+  mysql-root-password: myRootPassword
+  mysql-user: myUser
+  mysql-user-password: myUserPassword
+```
+
+If `mariadb.existingSecret` is not set, the chart will create a secret named `<release-name>-mariadb-secret` using the values from `mariadb.env.rootPassword`, `mariadb.env.user`, and `mariadb.env.password`.
+
 # Helm Values for Nginx Proxy Manager Deployment
 
 The following table outlines the configuration options available for deploying Nginx Proxy Manager using Helm. You can customize these values to fit your requirements.
 
-| **Parameter**                            | **Description**                                                        | **Default Value**          |
-| ---------------------------------------- | ---------------------------------------------------------------------- | -------------------------- |
-| `namespaceOverride`                      | The namespace where resources will be deployed.                        | `""` (empty)               |
-| **Nginx Configuration**                  |                                                                        |                            |
-| `nginx.replicas`                         | Number of replicas (instances) of Nginx Proxy Manager.                 | `1`                        |
-| `nginx.image.repository`                 | Docker image repository for Nginx Proxy Manager.                       | `jc21/nginx-proxy-manager` |
-| `nginx.image.tag`                        | Docker image tag for Nginx Proxy Manager.                              | `latest`                   |
-| `nginx.service.type`                     | Type of service for Nginx (e.g., LoadBalancer, ClusterIP, NodePort).   | `LoadBalancer`             |
-| `nginx.service.externalIPs`              | External IPs for the Nginx service. Leave empty to skip.               | `[]`                       |
-| `nginx.service.ports.http`               | Port for HTTP traffic.                                                 | `80`                       |
-| `nginx.service.ports.https`              | Port for HTTPS traffic.                                                | `443`                      |
-| `nginx.service.ports.webui`              | Port for the Nginx Proxy Manager web interface.                        | `81`                       |
-| **Persistent Storage for Nginx**         |                                                                        |                            |
-| `nginxPVC.accessMode`                    | Access mode for the persistent volume claim (PVC).                     | `ReadWriteOnce`            |
-| `nginxPVC.storage`                       | Amount of storage for Nginx data.                                      | `5Gi`                      |
-| **MariaDB Configuration**                |                                                                        |                            |
-| `mariadb.replicas`                       | Number of replicas for MariaDB.                                        | `1`                        |
-| `mariadb.image.repository`               | Docker image repository for MariaDB.                                   | `jc21/mariadb-aria`        |
-| `mariadb.image.tag`                      | Docker image tag for MariaDB.                                          | `latest`                   |
-| `mariadb.env.rootPassword`               | Root password for the MariaDB database.                                | `root_pass_changeme`       |
-| `mariadb.env.database`                   | Name of the database created for Nginx Proxy Manager to use.           | `proxy-manager`            |
-| `mariadb.env.user`                       | Username for the MariaDB user account.                                 | `proxy_manager_user`       |
-| `mariadb.env.password`                   | Password for the MariaDB user account.                                 | `user_pass_changeme`       |
-| `mariadb.service.type`                   | Type of service for MariaDB (e.g., ClusterIP, LoadBalancer, NodePort). | `ClusterIP`                |
-| **Persistent Storage for MariaDB**       |                                                                        |                            |
-| `mariadbPVC.accessMode`                  | Access mode for the MariaDB PVC.                                       | `ReadWriteOnce`            |
-| `mariadbPVC.storage`                     | Amount of storage for MariaDB data.                                    | `1Gi`                      |
-| **Persistent Storage for Let's Encrypt** |                                                                        |                            |
-| `letsencryptPVC.accessMode`              | Access mode for the Let's Encrypt certificates PVC.                    | `ReadWriteOnce`            |
-| `letsencryptPVC.storage`                 | Amount of storage for Let's Encrypt certificates.                      | `1Gi`                      |
-
-
+| **Parameter**                  | **Description**                                                                 | **Default Value**              |
+| ------------------------------ | ------------------------------------------------------------------------------- | ------------------------------ |
+| `namespaceOverride`            | Namespace for all resources.                                                    | `""`                           |
+| **Nginx Configuration**        |                                                                                 |                                |
+| `nginx.replicas`               | Number of Nginx Proxy Manager pods.                                             | `1`                            |
+| `nginx.image.repository`       | Nginx Proxy Manager image repository.                                           | `jc21/nginx-proxy-manager`     |
+| `nginx.image.tag`              | Nginx Proxy Manager image tag.                                                  | `latest`                       |
+| `nginx.service.type`           | Service type for Nginx Proxy Manager.                                           | `LoadBalancer`                 |
+| `nginx.service.externalIPs`    | List of external IPs for the Nginx service.                                     | `[]`                           |
+| `nginx.service.ports.http`     | HTTP port.                                                                      | `80`                           |
+| `nginx.service.ports.https`    | HTTPS port.                                                                     | `443`                          |
+| `nginx.service.ports.webui`    | Web UI port.                                                                    | `81`                           |
+| **Persistent Storage for Nginx**|                                                                                |                                |
+| `nginxPVC.accessMode`          | Access mode for Nginx PVC.                                                      | `ReadWriteOnce`                |
+| `nginxPVC.storage`             | Storage size for Nginx PVC.                                                     | `5Gi`                          |
+| `nginxPVC.storageClassName`    | Storage class for Nginx PVC.                                                    | `default`                      |
+| **MariaDB Configuration**      |                                                                                 |                                |
+| `mariadb.replicas`             | Number of MariaDB pods.                                                         | `1`                            |
+| `mariadb.image.repository`     | MariaDB image repository.                                                       | `jc21/mariadb-aria`            |
+| `mariadb.image.tag`            | MariaDB image tag.                                                              | `latest`                       |
+| `mariadb.env.rootPassword`     | MariaDB root password.                                                          | `root_pass_changeme`           |
+| `mariadb.env.database`         | MariaDB database name.                                                          | `proxy-manager`                |
+| `mariadb.env.user`             | MariaDB username.                                                               | `proxy_manager_user`           |
+| `mariadb.env.password`         | MariaDB user password.                                                          | `user_pass_changeme`           |
+| `mariadb.existingSecret`       | Name of existing secret for MariaDB credentials.                                | `""`                           |
+| `mariadb.service.type`         | Service type for MariaDB.                                                       | `ClusterIP`                    |
+| **Persistent Storage for MariaDB**|                                                                              |                                |
+| `mariadbPVC.accessMode`        | Access mode for MariaDB PVC.                                                    | `ReadWriteOnce`                |
+| `mariadbPVC.storage`           | Storage size for MariaDB PVC.                                                   | `1Gi`                          |
+| `mariadbPVC.storageClassName`  | Storage class for MariaDB PVC.                                                  | `default`                      |
+| **Persistent Storage for Let's Encrypt**|                                                                          |                                |
+| `letsencryptPVC.accessMode`    | Access mode for Let's Encrypt PVC.                                              | `ReadWriteOnce`                |
+| `letsencryptPVC.storage`       | Storage size for Let's Encrypt PVC.                                             | `1Gi`                          |
+| `letsencryptPVC.storageClassName` | Storage class for Let's Encrypt PVC.                                         | `default`                      |
 
 ### Step 3: Install the Chart
 

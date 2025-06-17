@@ -20,14 +20,23 @@ spec:
       - name: mariadb
         image: {{ .Values.mariadb.image.repository }}:{{ .Values.mariadb.image.tag }}
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: {{ .Values.mariadb.env.rootPassword }}
         - name: MYSQL_DATABASE
           value: {{ .Values.mariadb.env.database }}
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ default (printf "%s-mariadb-secret" .Release.Name) .Values.mariadb.existingSecret }}
+              key: mysql-root-password
         - name: MYSQL_USER
-          value: {{ .Values.mariadb.env.user }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ default (printf "%s-mariadb-secret" .Release.Name) .Values.mariadb.existingSecret }}
+              key: mysql-user
         - name: MYSQL_PASSWORD
-          value: {{ .Values.mariadb.env.password }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ default (printf "%s-mariadb-secret" .Release.Name) .Values.mariadb.existingSecret }}
+              key: mysql-user-password
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql

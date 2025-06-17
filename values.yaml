@@ -38,6 +38,8 @@ nginxPVC:
   accessMode: ReadWriteOnce
   # The amount of storage you want to allocate for the PVC.
   storage: 5Gi
+  # Storage class to use for the PVC.
+  storageClassName: default
 
 mariadb:
   # Specify how many replicas of MariaDB you want to run.
@@ -58,6 +60,20 @@ mariadb:
     user: proxy_manager_user
     # The password for the MariaDB user account.
     password: user_pass_changeme
+  
+  # Existing secret for MariaDB credentials.
+  # Example secret:
+  #   apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: my-mariadb-secret
+  #     namespace: nginxproxymanager  # Must match the namespace where Nginx Proxy Manager is deployed.
+  #   type: Opaque
+  #   stringData:
+  #     mysql-root-password: myVerySecureRootPassword
+  #     mysql-user: my-proxy-manager-user
+  #     mysql-user-password: myVerySecureUserPassword
+  existingSecret: ""
 
   service:
     # Type of service for MariaDB (e.g., ClusterIP, LoadBalancer, NodePort).
@@ -69,6 +85,8 @@ mariadbPVC:
   accessMode: ReadWriteOnce
   # The amount of storage you want to allocate for MariaDB data.
   storage: 1Gi
+  # Storage class to use for the PVC.
+  storageClassName: default
 
 # Persistent storage configuration for storing Let's Encrypt certificates.
 letsencryptPVC:
@@ -76,3 +94,5 @@ letsencryptPVC:
   accessMode: ReadWriteOnce
   # The amount of storage you want to allocate for Let's Encrypt certificates.
   storage: 1Gi
+  # Storage class to use for the PVC.
+  storageClassName: default

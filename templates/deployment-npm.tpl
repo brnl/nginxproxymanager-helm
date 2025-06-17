@@ -29,9 +29,15 @@ spec:
         - name: DB_MYSQL_PORT
           value: "3306"
         - name: DB_MYSQL_USER
-          value: {{ .Values.mariadb.env.user }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ default (printf "%s-mariadb-secret" .Release.Name) .Values.mariadb.existingSecret }}
+              key: mysql-user
         - name: DB_MYSQL_PASSWORD
-          value: {{ .Values.mariadb.env.password }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ default (printf "%s-mariadb-secret" .Release.Name) .Values.mariadb.existingSecret }}
+              key: mysql-user-password
         - name: DB_MYSQL_NAME
           value: {{ .Values.mariadb.env.database }}
         volumeMounts:
